@@ -2,6 +2,7 @@ import datetime as dt
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import GetSensorValue as gsv
+import keyboard as kb
 
 # Create figure for plotting
 fig = plt.figure()
@@ -12,10 +13,19 @@ ys = []
 # This function is called periodically from FuncAnimation
 # i is frame
 # Note: data should not be list but a value1!
-def animate(i, xs, ys):
+def animate(i, xs, ys,f):
     # Add x and y to lists
-    xs.append(dt.datetime.now().strftime('%H:%M:%S.%f'))
-    ys.append(gsv.getSensorValue())
+    t = dt.datetime.now().strftime('%H:%M:%S.%f')
+    xs.append(t)
+    f.write('('+ t + ',')
+    v = gsv.getSensorValue()
+    ys.append(v)
+    f.write("%f )\n" % v)
+
+    # write data into txt file and close the diagram
+    # bug? 
+    if kb.is_pressed('q'):
+        f.close()
 
     # Limit x and y lists to 20 items
     xs = xs[-20:]
@@ -24,6 +34,7 @@ def animate(i, xs, ys):
     # Draw x and y lists
     ax.clear()
     ax.plot(xs, ys)
+    ax.set_ylim([0,7])
 
     # Format plot
     plt.xticks(rotation=45, ha='right')
@@ -32,7 +43,9 @@ def animate(i, xs, ys):
     plt.ylabel('GSR Value (μS)')
 
 def draw():
-    ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys, ), interval=100)
+    # write GSR data into a txt file
+    f = open("exp.txt","w+")
+    ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys,f), interval=50)
     plt.show()
 
 if __name__ == '__main__':
