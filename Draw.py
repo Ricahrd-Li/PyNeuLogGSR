@@ -1,6 +1,7 @@
 import datetime as dt
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import GetSensorValue as gsv
 
 # Create figure for plotting
 fig = plt.figure()
@@ -11,10 +12,10 @@ ys = []
 # This function is called periodically from FuncAnimation
 # i is frame
 # Note: data should not be list but a value1!
-def animate(i, xs, ys,data):
+def animate(i, xs, ys):
     # Add x and y to lists
     xs.append(dt.datetime.now().strftime('%H:%M:%S.%f'))
-    ys.append(data)
+    ys.append(gsv.getSensorValue())
 
     # Limit x and y lists to 20 items
     xs = xs[-20:]
@@ -30,11 +31,10 @@ def animate(i, xs, ys,data):
     plt.title('GSR diagram')
     plt.ylabel('GSR Value (μS)')
 
-def draw(data):
-    ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys, data), interval=100)
+def draw():
+    ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys, ), interval=100)
     plt.show()
 
 if __name__ == '__main__':
     # Set up plot to call animate() function periodically
-    data = 0.1
-    draw(data)
+    draw()
