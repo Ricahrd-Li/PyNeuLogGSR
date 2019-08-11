@@ -9,10 +9,10 @@ fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
 xs = []
 ys = []
-
+    
 # This function is called periodically from FuncAnimation
 # i is frame
-# Note: data should not be list but a value1!
+# Note: data should not be list but a value!
 def animate(i, xs, ys,f):
     # Add x and y to lists
     t = dt.datetime.now().strftime('%H:%M:%S.%f')
@@ -45,7 +45,7 @@ def animate(i, xs, ys,f):
 def draw():
     # write GSR data into a txt file
     f = open("exp.txt","w+")
-    ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys,f), interval=50)
+    ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys,f), interval=100)
     plt.show()
 
 if __name__ == '__main__':
