@@ -1,33 +1,11 @@
 Exp Starts!
+1--->6.71: Pinch start
+9.21: Pinch end
 
-1--->1.81: Button Pressed
-1.94: Button Released
+2--->13.21: Pinch start
+15.71: Pinch end
 
-2--->2.81: Button Pressed
-2.94: Button Released
+3--->22.71: Pinch start
+25.21: Pinch end
 
-3--->3.78: Button Pressed
-3.89: Button Released
-
-4--->4.82: Button Pressed
-4.96: Button Released
-
-5--->5.71: Button Pressed
-5.83: Button Released
-
-6--->6.77: Button Pressed
-6.89: Button Released
-
-7--->7.74: Button Pressed
-7.87: Button Released
-
-8--->8.72: Button Pressed
-8.84: Button Released
-
-9--->9.68: Button Pressed
-9.81: Button Released
-
-10--->10.71: Button Pressed
-10.86: Button Released
-
-11.37: Exp end!
+26.66: Exp end!

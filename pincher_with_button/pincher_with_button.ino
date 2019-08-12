@@ -10,29 +10,41 @@ const int buttonPin = 2;
 const int switchPin = 3;
 Servo myServo;
 
+// experiment time
 double expTime = 0;
 unsigned long expEndTime = 0;
 unsigned long expStartTime = 0;
-double buttonPressedTime = 0;
-double buttonReleasedTime = 0;
-EasyButton button(buttonPin,50,true,true);
-EasyButton switchExp(switchPin,200,true,true);
+
+// pinch time
+unsigned long currentTime = 0; 
+unsigned long initialTime = 0;
+unsigned long pinchStartTime = 0;
+
+bool buttonPressed = false;
+bool pinchStarted = false;
+int randomTime = 4; 
+unsigned long pinchTime = 2500; // pinch for 2.5 second
+
+EasyButton button(buttonPin,50,true,false);
+EasyButton switchExp(switchPin,1000,true,false);
 
 void setup() {
   expStartTime = 0;
-  buttonPressedTime = 0;
+  initialTime = 0;
+
   Serial.begin(9600);
   myServo.attach(9);  // servo connected to D9;
   button.begin();
   switchExp.begin();
+  randomTime = (( millis() % 6 )+ 4) *1000;
 }
 
 void loop() {
   button.read();
   switchExp.read();
-  
+
   // Switch
-  if(switchExp.isPressed() == 0) {
+  if(switchExp.isPressed()) {
     // Record the start time of experiment
     if(expStartTime == 0){
       Serial.println(0);
@@ -51,28 +63,40 @@ void loop() {
   }
   
   // Button
-  if(switchExp.isPressed() == 0){
-    if(button.isPressed() == 0){
-      // Record the time when button is pressed
-      if(buttonPressedTime == 0){
-        buttonPressedTime = (double)(millis() - expStartTime) / 1000; 
-        Serial.println(2);
-        Serial.println(buttonPressedTime); 
-        
-      }
-      myServo.write(closeAngle);
+  if(switchExp.isPressed()){
+    // When you press the button, the random pinch mode starts!
+    if(button.isPressed()){ 
+      buttonPressed = true;
+      Serial.println("button press");
+      // Record button pressed time as initialTime
+      initialTime = millis(); 
     }
-    else{
-      if(buttonPressedTime != 0){
-        buttonReleasedTime = (double)(millis() - expStartTime) / 1000; 
-        buttonPressedTime = 0;
-        Serial.println(3);
-        Serial.println(buttonReleasedTime); 
-      }
-      myServo.write(openAngle);
-    }// End if-else 
-  } 
-  // switch not pressed
-  else  myServo.write(openAngle);
 
+    // if in the random pinch mode
+    if(buttonPressed){
+      currentTime = millis();
+      if ((currentTime - initialTime)>= randomTime && pinchStarted == false){ // give a pinch
+        myServo.write(closeAngle);
+        Serial.println("2");
+        Serial.println( (double)(currentTime - expStartTime) / 1000.0 );
+        pinchStartTime = currentTime; 
+        randomTime = (( millis() % 6 )+ 4) *1000;
+        pinchStarted = true;
+      }
+
+      if(pinchStarted){
+        if ((currentTime - pinchStartTime) > pinchTime){
+          myServo.write(openAngle);
+          Serial.println("3");
+          Serial.println( (double)(currentTime - expStartTime) / 1000.0 );
+          initialTime = currentTime;
+          pinchStarted = false;
+        }
+      }
+    }
+  }
+  else{ 
+    myServo.write(openAngle);
+    buttonPressed = false;
+  }
 }
