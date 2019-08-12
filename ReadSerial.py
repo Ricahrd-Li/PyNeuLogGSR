@@ -11,7 +11,7 @@ if __name__ == '__main__':
     while 1:
         signal = ser.readline()
         # print(signal.decode("ascii"))
-        if  signal == b'0\r\n' :
+        if  signal == b'4\r\n' :
             pyautogui.click(580, 95) 
             pyautogui.click(580, 95)      
             t = "Exp Starts!\n"       

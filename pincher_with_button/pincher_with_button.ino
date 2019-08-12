@@ -23,7 +23,7 @@ unsigned long pinchStartTime = 0;
 bool buttonPressed = false;
 bool pinchStarted = false;
 int randomTime = 4; 
-unsigned long pinchTime = 2500; // pinch for 2.5 second
+unsigned long pinchTime = 30f00; // pinch for 2.5 second
 
 EasyButton button(buttonPin,50,true,false);
 EasyButton switchExp(switchPin,1000,true,false);
@@ -34,6 +34,7 @@ void setup() {
 
   Serial.begin(9600);
   myServo.attach(9);  // servo connected to D9;
+  myServo.write(openAngle);
   button.begin();
   switchExp.begin();
   randomTime = (( millis() % 6 )+ 4) *1000;
@@ -47,7 +48,7 @@ void loop() {
   if(switchExp.isPressed()) {
     // Record the start time of experiment
     if(expStartTime == 0){
-      Serial.println(0);
+      Serial.println(4);
       expStartTime = millis();
     }
   }
@@ -67,7 +68,7 @@ void loop() {
     // When you press the button, the random pinch mode starts!
     if(button.isPressed()){ 
       buttonPressed = true;
-      Serial.println("button press");
+//      Serial.println("button press");
       // Record button pressed time as initialTime
       initialTime = millis(); 
     }
