@@ -5,6 +5,7 @@ import random
 
 ser = serial.Serial('COM4', 9600)
 i = 0 
+fileName = input("Name&Num:")
 
 if __name__ == '__main__':
     # print(pyautogui.position())
@@ -17,7 +18,7 @@ if __name__ == '__main__':
             t = "Exp Starts!\n"       
             i = 0
             print(t)   
-            f = open("expData.txt","w+") 
+            f = open(".\Data\\"+fileName+".txt","w+") 
             f.write(t)
 
         elif signal == b'2\r\n' : 

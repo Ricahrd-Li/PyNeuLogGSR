@@ -23,7 +23,7 @@ unsigned long pinchStartTime = 0;
 bool buttonPressed = false;
 bool pinchStarted = false;
 int randomTime = 4; 
-unsigned long pinchTime = 30f00; // pinch for 2.5 second
+unsigned long pinchTime = 3000; // pinch for 2.5 second
 
 EasyButton button(buttonPin,50,true,false);
 EasyButton switchExp(switchPin,1000,true,false);
@@ -37,7 +37,7 @@ void setup() {
   myServo.write(openAngle);
   button.begin();
   switchExp.begin();
-  randomTime = (( millis() % 6 )+ 4) *1000;
+  randomTime = (( millis() % 6 )+ 5) *1000;
 }
 
 void loop() {
